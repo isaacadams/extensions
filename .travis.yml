@@ -3,6 +3,7 @@ node_js :
  - stable
 install:
  - npm install
+ - npm i typescript
 script:
-- npm run build
-- npm test
+ - npm run build
+ - npm test
