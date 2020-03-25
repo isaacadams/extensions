@@ -1,9 +1,9 @@
 language : node_js
 node_js :
  - stable
-install:
- - npm install
- - npm i typescript
+# install:
+#  - npm install
+#  - npm i typescript
 script:
  - npm run build
  - npm run cover 
