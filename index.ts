@@ -4,6 +4,10 @@ declare global {
         takeFromEnd(amountToTake: number): Array<T>;
         takeRandomly(amountToTake: number): Array<T>;
     }
+
+    interface String {
+        isNullOrWhitespace(): boolean;
+    }
 }
 
 Array.prototype.take = function(amountToTake) {
@@ -29,4 +33,9 @@ export function getRandomInt(min: number, max: number) {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
+}
+
+String.prototype.isNullOrWhitespace = function() {
+    if(!this) return true;
+    return this.match(/^\s*$/) !== null;
 }
