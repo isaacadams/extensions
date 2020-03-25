@@ -11,3 +11,10 @@ helpful extensions methods for javascript objects
 [ 1, 3, 5, 8, 21 ].takeFromEnd(2); // returns [ 8, 21 ]
 [ 1, 3, 5, 8, 21 ].takeRandomly(4); // returns an array of length 4 with randomly selected items from the original array
 ```
+
+#### Strings
+```javascript
+"".isNullOrWhitespace(); // returns true
+"   ".isNullOrWhitespace(); // returns true
+"hello world".isNullOrWhitespace(); // returns false
+```
