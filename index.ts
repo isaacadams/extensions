@@ -12,3 +12,4 @@ declare global {
 
 import './src/Array';
 import './src/String';
+import './src/fs';
