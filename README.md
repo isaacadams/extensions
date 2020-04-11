@@ -18,3 +18,13 @@ helpful extensions methods for javascript objects
 "   ".isNullOrWhitespace(); // returns true
 "hello world".isNullOrWhitespace(); // returns false
 ```
+
+#### fs
+```javascript
+/// if the directory at the given path already exists, this function will return true
+/// if the directory & subdirectories do not exist, this function will create them and return true
+/// if anything goes wrong, it will return false
+let result = fs.ensureDirectoryExists('./path/to/directory'); // returns true/false
+
+
+```
