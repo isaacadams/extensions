@@ -1,6 +1,6 @@
 'use strict';
 var expect = require('chai').expect;
-let { getRandomInt } = require('../dist/index.js');
+let { getRandomInt } = require('../dist/src/Array');
 
 describe('getRandomInteger', () => {
     it('should fall in the range of 5 to 32', () => {
@@ -24,23 +24,5 @@ describe('take extension functions', () => {
     
     it('takes the last 2 items from array and puts it into a new array', () => {
         expect([ 1, 2, 3, 4, 5, 6 ].takeFromEnd(2)).to.eql([ 5, 6 ]);
-    });
-});
-
-describe('string extension "isNullOrWhitespace"', () => {
-    it('should evaluate an empty string as true', () => {
-        expect("".isNullOrWhitespace()).to.be.true;
-    });
-
-    it('should evaluate an string of whitespaces as true', () => {
-        expect("      ".isNullOrWhitespace()).to.be.true;
-    });
-
-    it('should evaluate a string with characters as false', () => {
-        expect("   hello world      ".isNullOrWhitespace()).to.be.false;
-    });
-
-    it('should evaluate a string with numbers as false', () => {
-        expect("123".isNullOrWhitespace()).to.be.false;
     });
 });
