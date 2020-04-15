@@ -1,10 +1,12 @@
 'use strict';
+import assert from 'assert';
+require('../dist/index');
 var expect = require('chai').expect;
 let fs = require('fs');
 let path = require('path');
 
 let root = path.parse(process.mainModule.filename).dir;
-let temp = root + "/temp";    
+let temp = path.join(root, "temp");    
 if(fs.existsSync(temp)) throw new Error(`the test artifact directory already exists @ ${temp}`)
 else console.log(`creating temporary test artifact directory @ ${temp}`);
 
@@ -23,5 +25,21 @@ describe('fs extension functions', () => {
         let directoryToCreate = temp + '/jingle/bells';
         let result = fs.ensureDirectoryExists(directoryToCreate);
         expect(fs.existsSync(directoryToCreate)).be.true;
+    });
+
+    it('should copy the file and all of its contents exactly to the new location', () => {
+        let toDirectory = temp + '/copied/files';
+        let fileToCopy = __filename;
+        
+        return fs.copy(fileToCopy, toDirectory)
+        .then((copiedFilePath) => {
+            let original = fs.readFileSync(fileToCopy).toString('utf-8');
+            let copy = fs.readFileSync(copiedFilePath).toString('utf-8');
+
+            expect(original).to.deep.equal(copy);
+        })
+        .catch(error => {
+           assert.fail(error);
+        });
     });
 });
