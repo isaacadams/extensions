@@ -12,12 +12,15 @@
   "scripts": {
     "prepare": "npm i -g typescript",
     "build": "tsc",
-    "test": "mocha --reporter spec",
-    "cover": "istanbul cover node_modules/mocha/bin/_mocha test/*.js - - -R spec",
+    "test": "mocha --require babel-register --reporter spec",
+    "cover": "istanbul cover npm test",
     "prepublishOnly": "npm run test"
   },
   "devDependencies": {
     "@types/node": "^13.11.1",
+    "babel-core": "^6.26.3",
+    "babel-preset-env": "^1.7.0",
+    "babel-register": "^6.26.0",
     "chai": "^4.2.0",
     "coveralls": "^3.0.11",
     "istanbul": "^0.4.5",
