@@ -1,9 +1,8 @@
-'use strict';
 import assert from 'assert';
-require('../dist/index');
-var expect = require('chai').expect;
-let fs = require('fs');
-let path = require('path');
+import { expect } from 'chai';
+import '../dist/index';
+import fs from 'fs';
+import path from 'path';
 
 let root = path.parse(process.mainModule.filename).dir;
 let temp = path.join(root, "temp");    

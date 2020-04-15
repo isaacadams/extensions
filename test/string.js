@@ -1,6 +1,5 @@
-'use strict';
-var expect = require('chai').expect;
-require('../dist/index');
+import { expect } from 'chai';
+import '../dist/index';
 
 describe('string extension "isNullOrWhitespace"', () => {
     it('should evaluate an empty string as true', () => {

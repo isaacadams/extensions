@@ -1,6 +1,5 @@
-'use strict';
-var expect = require('chai').expect;
-let { getRandomInt } = require('../dist/src/Array');
+import { expect } from 'chai';
+import { getRandomInt } from '../dist/src/Array';
 
 describe('getRandomInteger', () => {
     it('should fall in the range of 5 to 32', () => {
