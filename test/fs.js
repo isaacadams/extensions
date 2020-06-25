@@ -20,10 +20,43 @@ describe('fs extension functions', () => {
         fs.rmdirSync(temp, { recursive: true });
     });
 
-    it('should create the immediate and all following sub directories if they dont already exist', () => {
-        let directoryToCreate = temp + '/jingle/bells';
+    it('should create all directories without a root', () => {
+        let directoryToCreate = path.join(temp, '/jingle/bells');
         let result = fs.ensureDirectoryExists(directoryToCreate);
         expect(fs.existsSync(directoryToCreate)).be.true;
+        expect(result).to.be.true;
+    });
+
+    it('should create all directories given a root', () => {
+        let directoryToCreate = 'jingle/bells/batman/smells';
+        let result = fs.ensureDirectoryExists(directoryToCreate, temp);
+        expect(fs.existsSync(path.join(temp, directoryToCreate))).be.true;
+        expect(result).to.be.true;
+    });
+
+    it('should create all directories in "." given an invalid root', () => {
+        let invalid_roots = [
+            {case: "null", value: null},
+            {case: "undefined", value: undefined},
+            {case: "empty", value: ''},
+            {case: "whitespace", value: '    '},
+        ];
+
+        let results = invalid_roots.map(r => {
+            let directoryToCreate = r.case + '/jingle/bells/batman/smells';
+            return {
+                case: r.case,
+                directory: "./" + directoryToCreate,
+                result: fs.ensureDirectoryExists(directoryToCreate, r.value)
+            };
+        });
+
+        results.forEach(r => {
+            expect(fs.existsSync(r.directory), `${r.case} failed`).to.be.true;
+            expect(r.result, `${r.case} failed`).to.be.true;
+        });
+        //expect(fs.existsSync(path.join(temp, directoryToCreate))).be.true;
+        //expect(results).to.have.all.members(true);
     });
 
     it('should copy the file and all of its contents exactly to the new location', () => {
