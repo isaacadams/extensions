@@ -9,6 +9,8 @@ let temp = path.join(root, "temp");
 if(fs.existsSync(temp)) throw new Error(`the test artifact directory already exists @ ${temp}`)
 else console.log(`creating temporary test artifact directory @ ${temp}`);
 
+const directoriesToDelete = [temp];
+
 describe('fs extension functions', () => {
     before(function() {
         // create temporary directory to place generated artifacts
@@ -17,7 +19,10 @@ describe('fs extension functions', () => {
 
     after(function() {
         // remove temporary directory
-        fs.rmdirSync(temp, { recursive: true });
+        directoriesToDelete.forEach(d => {
+            if(!fs.existsSync(d)) return;
+            fs.rmdirSync(d, { recursive: true })
+        });
     });
 
     it('should create all directories without a root', () => {
@@ -54,9 +59,8 @@ describe('fs extension functions', () => {
         results.forEach(r => {
             expect(fs.existsSync(r.directory), `${r.case} failed`).to.be.true;
             expect(r.result, `${r.case} failed`).to.be.true;
+            directoriesToDelete.push("./" + r.case);
         });
-        //expect(fs.existsSync(path.join(temp, directoryToCreate))).be.true;
-        //expect(results).to.have.all.members(true);
     });
 
     it('should copy the file and all of its contents exactly to the new location', () => {
