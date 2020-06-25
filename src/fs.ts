@@ -20,20 +20,16 @@ declare module 'fs' {
 }
 
 fs.ensureDirectoryExists = function(pathToFolder: string, root?: string): boolean {
-    root = root ?? ".";
-    root = root?.isNullOrWhitespace() ? "." : root;
-
     try {
+        root = root ?? ".";
+        root = root?.isNullOrWhitespace() ? "." : root;
         pathToFolder = pathToFolder.replace(/\\/g, "/");
         let directories: string[] = pathToFolder.split('/');
+
         let nextDirectory: string | undefined = directories.shift();
-
         if(!nextDirectory) return true;
-
         root = path.join(root, nextDirectory);
-
         if(!fs.existsSync(root)) fs.mkdirSync(root);
-
         return fs.ensureDirectoryExists(directories.join('/'), root);
     }
     catch {
