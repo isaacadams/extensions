@@ -3,6 +3,7 @@ import { expect } from 'chai';
 import '../dist/index';
 import fs from 'fs';
 import path from 'path';
+import { after, before } from 'mocha';
 
 let root = path.parse(process.mainModule.filename).dir;
 let temp = path.join(root, "temp");    
@@ -20,6 +21,7 @@ describe('fs extension functions', () => {
     after(function() {
         // remove temporary directory
         directoriesToDelete.forEach(d => {
+            console.log(`deleting ${d}`);
             if(!fs.existsSync(d)) return;
             fs.rmdirSync(d, { recursive: true })
         });
@@ -28,15 +30,17 @@ describe('fs extension functions', () => {
     it('should create all directories without a root', () => {
         let directoryToCreate = path.join(temp, '/jingle/bells');
         let result = fs.ensureDirectoryExists(directoryToCreate);
+
         expect(fs.existsSync(directoryToCreate)).be.true;
-        expect(result).to.be.true;
+        expect(result).to.not.be.null;
     });
 
     it('should create all directories given a root', () => {
         let directoryToCreate = 'jingle/bells/batman/smells';
         let result = fs.ensureDirectoryExists(directoryToCreate, temp);
+
         expect(fs.existsSync(path.join(temp, directoryToCreate))).be.true;
-        expect(result).to.be.true;
+        expect(result).to.not.be.null;
     });
 
     it('should create all directories in "." given an invalid root', () => {
@@ -56,10 +60,13 @@ describe('fs extension functions', () => {
             };
         });
 
+        results.forEach(r => directoriesToDelete.push("./" + r.case));
+
         results.forEach(r => {
+
             expect(fs.existsSync(r.directory), `${r.case} failed`).to.be.true;
-            expect(r.result, `${r.case} failed`).to.be.true;
-            directoriesToDelete.push("./" + r.case);
+            expect(r.result.root === ".", `${r.case} failed`).to.be.true;
+            expect(r.result).to.not.be.null;
         });
     });
 
