@@ -1,7 +1,5 @@
 import fs, { PathLike } from 'fs';
 import path from 'path';
-import { deepStrictEqual } from 'assert';
-import { isatty } from 'tty';
 
 declare module 'fs' {
 
@@ -31,14 +29,19 @@ interface IDirectoryDetails {
 fs.ensureDirectoryExists = function(pathToFolder: string, root?: string): IDirectoryDetails | null {
     try {
         let isAbsolute = path.isAbsolute(pathToFolder);
+        let isWin = process.platform === "win32";
 
         pathToFolder = pathToFolder.replace(/\\/g, "/");
         let directories: string[] = pathToFolder.split('/');
         let firstUnderRoot = directories[0];
 
-        root = isAbsolute ? directories.shift() : root;
-        root = root ?? ".";
-        root = root?.isNullOrWhitespace() ? "." : root;
+        if(isAbsolute) {
+            // first directory needs to be shifted in the absolute scenario, regardless of windows or linux
+            let firstDirectory = directories.shift();
+            // in the linux scenario, the first directory is going to be an empty string, so set the root directly to '/'
+            root = isWin ? firstDirectory : "/";
+        }
+        root = cleanString(root, ".");
 
         let allNewFolders: any[] = [];
 
@@ -107,4 +110,10 @@ function createFolderIfItDoesNotExistSync(pathToFolder: fs.PathLike): boolean {
     if(fs.existsSync(pathToFolder)) return false;
     fs.mkdirSync(pathToFolder);
     return true;
+}
+
+function cleanString(stringToClean: string | undefined, defaultValue: string): string {
+    stringToClean = stringToClean ?? defaultValue;
+    stringToClean = stringToClean?.isNullOrWhitespace() ? defaultValue : stringToClean;
+    return stringToClean;
 }
