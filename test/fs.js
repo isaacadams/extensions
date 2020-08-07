@@ -30,7 +30,7 @@ describe('fs extension functions', () => {
     it('should create all directories without a root', () => {
         let directoryToCreate = path.join(temp, '/jingle/bells');
         let result = fs.ensureDirectoryExists(directoryToCreate);
-
+        console.log(result);
         expect(fs.existsSync(directoryToCreate)).be.true;
         expect(result).to.not.be.null;
     });
